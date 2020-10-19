@@ -1,0 +1,19 @@
+{% extends "encyclopedia/layout.html" %}
+
+{% block title %}Search Results{% endblock %}
+
+{% block body %}
+    <h1>OOPS!</h1>
+    {% if match %}
+        <h3>The page you are looking for doesn't exist.</h3>
+        <h3>Here are few related results.</h3>
+    {% else %}
+        <h3>There aren't any matching results.</h3>
+        <h3>Here is the list of all available entries.</h3>
+    {% endif %}
+    <ul>
+        {% for list in match %}
+            <a href="{{list}}"><li>{{ list }}</li></a>
+        {% endfor %}
+    </ul>
+{% endblock %}

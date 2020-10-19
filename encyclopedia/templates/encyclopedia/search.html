@@ -1,0 +1,17 @@
+{% extends "encyclopedia/layout.html" %}
+
+{% block title %}
+    {% if search %}    
+        {{ search }}
+    {% elif queryMatch %}
+        {{ queryMatch }}
+    {% else %}
+        {{ random }}
+    {% endif %}
+{% endblock %}
+
+{% block body %}
+        {{ html|safe }}
+        {% csrf_token %}
+        <!-- <a href="edit/{{search}}"><input type="submit" value="EDIT"></a> -->
+{% endblock %}

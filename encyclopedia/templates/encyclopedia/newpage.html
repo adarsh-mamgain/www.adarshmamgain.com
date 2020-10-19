@@ -1,0 +1,23 @@
+{% extends "encyclopedia/layout.html" %}
+
+{% block title %}
+    {% if request.method == "GET" %}
+        Create New Page
+    {% else %}
+        {{ title }}
+    {% endif %}
+{% endblock %}
+
+{% block body %}
+    <form action="{% url 'encyclopedia:newpage' %}" method="POST" id="newpage">
+        {% csrf_token %}
+        {% for message in messages %}
+            <div class="alert alert-danger alert-dismissable fade show">
+                <strong>{{ message }}</strong>
+            </div>
+        {% endfor %}
+        <h1>Create New Page</h1>
+        <table>{{ form.as_table }}</table>
+        <input type="submit" class="btn btn-dark" value="Create">
+    </form>
+{% endblock %}

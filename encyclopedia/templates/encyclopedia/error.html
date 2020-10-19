@@ -1,0 +1,12 @@
+{% extends "encyclopedia/layout.html" %}
+{% load static %}
+
+{% block title %}ERROR | Page not found{% endblock %}
+
+{% block body %}
+<div style="width: fit-content;margin: auto">
+    <img width="400px" height="400px" src="{% static 'encyclopedia/404.svg' %}" alt="404-error">
+    <h1>ERROR 404</h1>
+    <h3>The requested page was not found.</h3>
+</div>
+{% endblock %}
