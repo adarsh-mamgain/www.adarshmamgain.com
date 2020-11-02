@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, reverse, HttpResponseRedirect
 from django.contrib import messages
 import markdown2 as md
 from . import util
@@ -66,23 +66,31 @@ def newpage(request):
                 })
             else:
                 util.save_entry(title, content)
-                return redirect(f"/wiki/{title}")
+                return HttpResponseRedirect(reverse('encyclopedia:search', kwargs={'search': title}))
         else:
             return render(request, "encyclopedia/newpage.html", {
                 "form": form
             })
-    # elif request.method == "GET":
-    #     # editTitle = request.GET.get("search")
-    #     # editContent = util.get_entry(editTitle)
-    #     NewPageForm(request.GET)
-    # """
-    # Here working on edit page section
-    # else:
-    #     form = NewPageForm(util.get_entry(title, content))
-    # """
     return render(request, "encyclopedia/newpage.html", {
         "form": NewPageForm()
     })
 
-# def edit(request):
-#     return render(request, "encyclopedia/newpage.html")
+class Edit(forms.Form):
+    content = forms.CharField(label="Markdown Content", widget=forms.Textarea())
+
+def edit(request, edit):
+    form = Edit(request.POST) 
+    page = util.get_entry(edit)
+    context = {
+        'edit_form': Edit(initial={'content': page}),
+        'edit': edit
+    }
+    if request.method == 'GET':
+        return render(request, "encyclopedia/edit.html", context)
+    else:
+        if form.is_valid():
+            content = form.cleaned_data["content"]
+            util.save_entry(edit, content)
+            return HttpResponseRedirect(reverse('encyclopedia:search', kwargs={'search': edit}))
+        else:
+            return render(request, "encyclopedia/edit.html", context)
